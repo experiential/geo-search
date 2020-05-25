@@ -1,0 +1,21 @@
+version: '3'
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - './client:/www/data'
+    ports:
+      - '3050:80'
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./client:/www/data
+  database:
+    volumes:
+      - './database:/docker-entrypoint-initdb.d'
+    ports:
+      - '3051:3306'

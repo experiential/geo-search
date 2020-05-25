@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.68/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.68/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+  <div id="cesiumContainer" style="width: 700px; height:400px"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMjZmZDQwZC0yYTI3LTQ5NDAtOGMwNi1mZDhlOGQ4MzEwNjQiLCJpZCI6MjYyNTUsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODc0ODU0ODl9.UOYgcxeDNryrROwhHJKiwub_SnX07U1dzRSlEVBuSN8';
+    var viewer = new Cesium.Viewer('cesiumContainer');
+
+	var scene = viewer.scene;
+	var canvas = viewer.canvas;
+	canvas.setAttribute('tabindex', '0'); // needed to put focus on the canvas
+	canvas.onclick = function() {
+	    canvas.focus();
+	};
+
+	var handler = new Cesium.ScreenSpaceEventHandler(canvas);
+	handler.setInputAction(function(eventInfo) {
+	    //mousePosition = startMousePosition = Cesium.Cartesian3.clone(movement.position);
+	    var ellipsoid = viewer.scene.globe.ellipsoid;
+	    // Mouse over the globe to see the cartographic position 
+	    var position = eventInfo.position;
+	    console.log("x:" + position.x, "y:" + position.y);
+	    var cartesian = viewer.camera.pickEllipsoid(new Cesium.Cartesian3(position.x, position.y), ellipsoid);
+	    if (cartesian) {
+	        var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+	        var longitude = Cesium.Math.toDegrees(cartographic.longitude);
+	        var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+	        console.log("long:" + longitude, "lat:" + latitude);
+
+	        // Add marker and range boundary for search
+			var range = document.getElementById("rangeField").value;
+	        var searchMarker = viewer.entities.getById('searchMarker');
+	        var rangeMarker = viewer.entities.getById('searchRangeMarker');
+	        if(!searchMarker)
+	        {
+				searchMarker = viewer.entities.add({
+				  id: 'searchMarker',
+				  position : Cesium.Cartesian3.fromDegrees(longitude, latitude),
+				  billboard : {
+				    image : 'navigation-5109671_1280.png',
+				    width : 24,
+				    height : 32
+				  },
+				  label : {
+				    text : 'Search point',
+				    font : '14pt sans-serif',
+				    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+				    outlineWidth : 2,
+				    verticalOrigin : Cesium.VerticalOrigin.TOP,
+				    pixelOffset : new Cesium.Cartesian2(0, 32)
+				  }
+				});
+
+		        var rangeMarker = viewer.entities.add({
+		          id: 'searchRangeMarker',
+				  position: Cesium.Cartesian3.fromDegrees(longitude, latitude),
+				  ellipse : {
+				    semiMinorAxis : range * 1000.0,
+				    semiMajorAxis : range * 1000.0,
+				    material : Cesium.Color.BLUE.withAlpha(0.5),
+				    outline: true,
+				    outlineColor: Cesium.Color.GREEN,
+				    outlineWidth: 2.0,
+				  }
+				});
+	    	}
+	    	else
+	    	{
+	    		searchMarker.position = Cesium.Cartesian3.fromDegrees(longitude, latitude);
+	    		rangeMarker.position = Cesium.Cartesian3.fromDegrees(longitude, latitude);
+	    		rangeMarker.ellipse.semiMinorAxis = range * 1000.0;
+	    		rangeMarker.ellipse.semiMajorAxis = range * 1000.0;
+	    	}
+
+			viewer.zoomTo(viewer.entities);
+
+	        // Perform search
+	        fetch('http://localhost:3050/geog_search_xml.php?delta='+latitude+'&phi='+longitude+'&range='+range, {
+			  method: 'GET',
+			  headers: {
+			  },
+			  body: null,
+			})
+			.then(response => response.text())
+			.then(data => {
+			  console.log('Success:', data);
+			  var results = document.getElementById("results");
+			  results.innerHTML = data;
+			})
+			.catch((error) => {
+			  console.error('Error:', error);
+			});
+
+	    }
+	}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+  </script>
+  <div>
+  	<h2>Parameters</h2>
+  	<p>Range: <input id="rangeField" type="number" />
+  </div>
+  <div id="results"></div>
+</body>
+</html>
