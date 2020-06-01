@@ -1,11 +1,21 @@
 version: '3'
 services:
+  route_handler:
+    restart: always
+    build:
+      context: ./route_handler
+    depends_on:
+      - client
+      - php
   client:
+    stdin_open: true
     restart: always
     build:
       context: ./client
-    depends_on:
-      - php
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile.dev
   database:
     image: 'mysql:latest'
     command: --default-authentication-plugin=mysql_native_password

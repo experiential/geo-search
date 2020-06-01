@@ -1,0 +1,3 @@
+export const CHANGE_RANGE = "CHANGE_RANGE";
+export const SEARCH_AT_POINT = "SEARCH_AT_POINT";
+export const UPDATE_RESULTS = "UPDATE_RESULTS";

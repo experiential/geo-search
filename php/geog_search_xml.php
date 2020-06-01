@@ -40,37 +40,18 @@ if(array_key_exists("sortBy", $_GET))
 }
 $testPoint = array($testPhi, $testDelta);
 $testPointCartesian = geogToCartesian($testPoint);
-
-// Enclosing div
-echo "<div>";
-
-// Echo out initial part of response
-?>
-<table class="searchresults_table" cellpadding="0" cellspacing="0">
-  <tr class="searchresults_header" >
-    <td width="40px">Rank</td>
-    <td width="86px">Order</td>
-    <td width="86px">Family</td>
-    <td width="124px">Scientific Name</td>
-    <td width="124px">Common Name</td>
-    <td width="40px">Score</td>
-    <td width="54px">Range (km)</td>
-  </tr>
-<?php
 $debugOutput .= "TestPhi=".$testPhi." TestDelta=".$testDelta."<br/>";
 
+// Create results object for JSON response
+$response = [ "results" => [] ];
+
 // Construct query
-$query = "SELECT species.Species_ID, EDGE_rank, Species_order, Species_family, Scientific_name, Common_name, GE_score, Edgeometer, Polygon_ID ";
+$query = "SELECT species.Species_ID, Species_order, Species_family, Scientific_name, Common_name, GE_score, Polygon_ID ";
 $query .= "FROM polygon, species ";
 $query .= "WHERE polygon.Species_ID = species.Species_ID ";
 if($sortBy != "")
 {
   $query .= "ORDER BY `" . $sortBy . "`";
-  if($sortBy == "EDGE_score" || $sortBy == "ED_score")
-  {
-    $query .= "+0";
-  }
-  
   if($sortOrder == "DESC")
   {
     $query .= " DESC";
@@ -218,7 +199,7 @@ foreach($speciesData as $speciesID => $speciesFields)
     if($c)
     {
       // Point is inside polygon
-      echoSearchResult($speciesID, "0");
+      addResult($response, $speciesData, $speciesID, 0.0);
       $debugOutput .= "Point inside polygon " . $polygonIndex . "<br/>";
       $pointInPolygon = true;
       break;
@@ -260,7 +241,8 @@ foreach($speciesData as $speciesID => $speciesFields)
     
     if($currentDistance < $proximity)
     {
-      echoSearchResult($speciesID, $currentDistance);
+      // Add species to results
+      addResult($response, $speciesData, $speciesID, $currentDistance);
     }
 
   }  // End if
@@ -270,45 +252,26 @@ foreach($speciesData as $speciesID => $speciesFields)
 // Output time taken for search
 $debugOutput .= "<br/><br/>Search took " . (microtime(true) - $startTime) . " seconds<br/>";
 
-// Close table tag
-echo "</table>";
-
-// Echo debug output
-//echo "<div><h2>Debug output</h2>$debugOutput</div>";
-
-// Enclosing div
-echo "</div>";
+// Echo results back to client as JSON
+echo json_encode($response);
 
 $connection->close();
 
-function echoSearchResult($speciesID, $distance)
+// End of main script
+
+function addResult(&$response, &$speciesData, $speciesID, $distance)
 {
-  global $altflag;
-  global $speciesData;
-  
-  if($altflag)
-  {
-    $bgColour = "white";
-  }
-  else
-  {
-    $bgColour = "#EAEAEA";
-  }
-  $rowAttributeString = "onMouseOver=\"this.style.backgroundColor='#FFFF99'\" onMouseOut=\"this.style.backgroundColor='" . $bgColour . "'\" onClick=\"displayShape('" . $speciesID . "');\"";
-?>
-  <tr <?php echo $rowAttributeString;?> class="searchresults_row" style="background:<?php echo $bgColour;?>;" title="Show species range">
-    <td><?php echo $speciesData[$speciesID]["EDGE_rank"];?></td>
-    <td><?php echo $speciesData[$speciesID]["Species_order"];?></td>
-    <td><?php echo $speciesData[$speciesID]["Species_family"];?></td>
-    <td><?php echo $speciesData[$speciesID]["Scientific_name"];?></td>
-    <td><?php echo $speciesData[$speciesID]["Common_name"];?></td>
-    <td><?php echo $speciesData[$speciesID]["GE_score"];?></td>
-    <td><?php echo round($distance);?></td>
-  </tr>
-<?php
-  
-  $altflag = !$altflag;
+  $response["results"][] = [
+    "speciesID"=>$speciesID,
+    "order"=>$speciesData[$speciesID]["Species_order"],
+    "family"=>$speciesData[$speciesID]["Species_family"],
+    "binomial"=>$speciesData[$speciesID]["Scientific_name"],
+    "commonName"=>$speciesData[$speciesID]["Common_name"],
+    "threatStatus"=>$speciesData[$speciesID]["GE_score"],
+    "distance"=>round($distance)
+  ];
 }
+
 
 // 3D funcs
 // x = 0, y = 1, z =2
