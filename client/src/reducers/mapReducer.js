@@ -1,8 +1,8 @@
 import { SEARCH_AT_POINT } from '../actions/types';
 
 const INITIAL_STATE = {
-	searchPointLon: 0.0,
-	searchPointLat: 0.0,
+	searchPoint: { longitude: 0.0, latitude: 0.0 },
+	searchMarkerVisible: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -10,8 +10,8 @@ export default (state = INITIAL_STATE, action) => {
 		case SEARCH_AT_POINT:
 			return { 
 				...state, 
-				searchPointLon: action.payload.searchPointLon, 
-				searchPointLat: action.payload.searchPointLat 
+				searchPoint: action.payload,
+				searchMarkerVisible: true
 			};
 		default:
 			return state;

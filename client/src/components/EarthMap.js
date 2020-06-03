@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Viewer, ScreenSpaceEvent, ScreenSpaceEventHandler } from "resium";
 import * as Cesium from 'cesium';
 
-import { updateResults } from '../actions';
+import SearchMarker from './SearchMarker';
+import { updateResults, searchAtPoint } from '../actions';
 
 
 class EarthMap extends Component {
@@ -17,6 +18,7 @@ class EarthMap extends Component {
         <ScreenSpaceEventHandler>
              <ScreenSpaceEvent action={(evt) => this.searchAtPoint(evt)} type={Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK} />
         </ScreenSpaceEventHandler>
+        <SearchMarker/>
       </Viewer>
     );
   }
@@ -34,8 +36,10 @@ class EarthMap extends Component {
       var latitude = Cesium.Math.toDegrees(cartographic.latitude);
       console.log("long:" + longitude, "lat:" + latitude);
 
-      // Add marker and range boundary for search
-      var range = document.getElementById("rangeField").value;
+      // Update state with new search point
+      this.props.searchAtPoint(longitude, latitude);
+
+      /*
       var searchMarker = viewer.entities.getById('searchMarker');
       var rangeMarker = viewer.entities.getById('searchRangeMarker');
       if(!searchMarker)
@@ -78,10 +82,10 @@ class EarthMap extends Component {
         rangeMarker.ellipse.semiMinorAxis = range * 1000.0;
         rangeMarker.ellipse.semiMajorAxis = range * 1000.0;
       }
-
-      viewer.zoomTo(viewer.entities);
+      */
 
       // Perform search
+      var range = this.props.searchParameters.range;
       fetch('/geog_search_xml.php?delta='+latitude+'&phi='+longitude+'&range='+range, {
         method: 'GET',
         headers: {
@@ -94,6 +98,7 @@ class EarthMap extends Component {
         //var results = document.getElementById("results");
         //results.innerHTML = data;
         this.props.updateResults(data.results);
+        viewer.zoomTo(viewer.entities);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -103,7 +108,7 @@ class EarthMap extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { map: state.map };
+  return { map: state.map, searchParameters: state.searchParameters };
 };
 
-export default connect(mapStateToProps, { updateResults })(EarthMap);
+export default connect(mapStateToProps, { searchAtPoint, updateResults })(EarthMap);

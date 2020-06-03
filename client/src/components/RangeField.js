@@ -1,5 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const RangeField = () => <input id="rangeField" type="number" value="1000"/>
+import { changeRange } from '../actions';
 
-export default RangeField;
+
+const RangeField = (props) =>
+	<input
+		id="rangeField"
+		type="number"
+		value={props.rangeValue}
+		onChange={ (event) => props.changeRange(event.target.value) }
+	/>
+
+const mapStateToProps = (state) => {
+  return { rangeValue: state.searchParameters.range };
+};
+
+export default connect(mapStateToProps, { changeRange })(RangeField);

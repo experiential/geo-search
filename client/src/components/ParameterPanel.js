@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import RangeField from './RangeField';
 
 
-const ParameterPanel = () =>
+const ParameterPanel = (props) =>
   <div>
     <h2>Parameters</h2>
     <p>Range: <RangeField/>km</p>

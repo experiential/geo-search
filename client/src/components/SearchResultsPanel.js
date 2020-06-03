@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import SearchResult from './SearchResult';
@@ -6,7 +6,14 @@ import SearchResult from './SearchResult';
 const SearchResultsPanel = (props) =>
   <table>
     <tbody>
-      <tr><th>Species</th><th>Common name</th><th>Distance</th></tr>
+      <tr>
+        <th>Species</th>
+        <th>Common name</th>
+        <th>Order</th>
+        <th>Family</th>
+        <th>Threat status</th>
+        <th>Distance</th>
+      </tr>
       {
         props.searchResults.results.map( result => { return (
             <SearchResult key={ result.speciesID } result={ result }/>
