@@ -4,6 +4,7 @@ import { Viewer, ScreenSpaceEvent, ScreenSpaceEventHandler } from "resium";
 import * as Cesium from 'cesium';
 
 import SearchMarker from './SearchMarker';
+import SpeciesRange from './SpeciesRange';
 import { updateResults, searchAtPoint } from '../actions';
 
 
@@ -16,9 +17,14 @@ class EarthMap extends Component {
           this.viewer = e ? e.cesiumElement : undefined;
         }}>
         <ScreenSpaceEventHandler>
-             <ScreenSpaceEvent action={(evt) => this.searchAtPoint(evt)} type={Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK} />
+          <ScreenSpaceEvent action={(evt) => this.searchAtPoint(evt)} type={Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK} />
         </ScreenSpaceEventHandler>
         <SearchMarker/>
+        {
+          this.props.map.speciesRanges.map( range => { return (
+            <SpeciesRange key={ range.speciesID } range={ range }/>
+          )})
+        }
       </Viewer>
     );
   }
@@ -38,51 +44,6 @@ class EarthMap extends Component {
 
       // Update state with new search point
       this.props.searchAtPoint(longitude, latitude);
-
-      /*
-      var searchMarker = viewer.entities.getById('searchMarker');
-      var rangeMarker = viewer.entities.getById('searchRangeMarker');
-      if(!searchMarker)
-      {
-        searchMarker = viewer.entities.add({
-          id: 'searchMarker',
-          position : Cesium.Cartesian3.fromDegrees(longitude, latitude),
-          billboard : {
-            image : 'navigation-5109671_1280.png',
-            width : 24,
-            height : 32
-          },
-          label : {
-            text : 'Search point',
-            font : '14pt sans-serif',
-            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-            outlineWidth : 2,
-            verticalOrigin : Cesium.VerticalOrigin.TOP,
-            pixelOffset : new Cesium.Cartesian2(0, 32)
-          }
-        });
-
-        rangeMarker = viewer.entities.add({
-          id: 'searchRangeMarker',
-          position: Cesium.Cartesian3.fromDegrees(longitude, latitude),
-          ellipse : {
-            semiMinorAxis : range * 1000.0,
-            semiMajorAxis : range * 1000.0,
-            material : Cesium.Color.BLUE.withAlpha(0.5),
-            outline: true,
-            outlineColor: Cesium.Color.GREEN,
-            outlineWidth: 2.0,
-          }
-        });
-      }
-      else
-      {
-        searchMarker.position = Cesium.Cartesian3.fromDegrees(longitude, latitude);
-        rangeMarker.position = Cesium.Cartesian3.fromDegrees(longitude, latitude);
-        rangeMarker.ellipse.semiMinorAxis = range * 1000.0;
-        rangeMarker.ellipse.semiMajorAxis = range * 1000.0;
-      }
-      */
 
       // Perform search
       var range = this.props.searchParameters.range;

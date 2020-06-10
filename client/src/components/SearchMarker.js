@@ -24,7 +24,6 @@ const SearchMarker = (props) => {
             semiMinorAxis={props.range * 1000.0}
             semiMajorAxis={props.range * 1000.0}
             extrudedHeight={1000.0}
-            rotation={0.78539}
             outline
             outlineColor={Color.GREEN}
             outlineWidth={1000.0}
@@ -37,7 +36,6 @@ const SearchMarker = (props) => {
   }
 }
 
-// // Comment to sort out highlighting in Sublime
 const mapStateToProps = (state) => {
   return { visible: state.map.searchMarkerVisible, searchPoint: state.map.searchPoint, range: state.searchParameters.range };
 };

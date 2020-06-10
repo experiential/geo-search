@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: text/xml');
+header('Content-Type: text/json');
 header("Cache-Control: no-cache, must-revalidate");
 //A date in the past
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -12,31 +12,27 @@ require($_SERVER['DOCUMENT_ROOT'] . "/database_functions.php");
 // Attempt to connect to database server and select database
 $connection = database_connect();
 
-// If we had PHP 5 and therefore SimpleXML...
-/*
-$request = $_GET["request"];
 
-$xml = simplexml_load_string($request);
-$selectedOrder = $xml -> xpath("/request/selected_order");
-$selectedFamily = $xml -> xpath("/request/selected_family");
-$selectedSpecies = $xml -> xpath("/request/selected_species");
-$fieldElements = $xml -> xpath("/request/fields/field");
+$debugOutput = "";
+$startTime = microtime(true);
 
-foreach($fieldElements as $field)
-{
-*/
 
 if(isset($_GET["type"]))
 {
   $polygonType = $_GET["type"];
 }
+else
+{
+  $polygonType = "species";
+}
 if(isset($_GET["id"]))
 {
   $id = (int)$_GET["id"];
 }
+//echo "Id: $id";
 
-// Echo out initial part of XML response
-echo "<response>";
+// Create top level response array
+$response = [];
 
 if($polygonType == "species")
 {
@@ -45,9 +41,8 @@ if($polygonType == "species")
   if($result->num_rows == 1)
   {
     $row = $result->fetch_array();
-    echo "<Species_ID>" . $id . "</Species_ID>";
-    echo "<Common_name>" . $row["Common_name"] . "</Common_name>";
-    echo "<Scientific_name>" . $row["Scientific_name"] . "</Scientific_name>";
+    $debugOutput .= "Species_ID: " . $id;
+    $response["speciesID"] = $id;
   }
 }
 
@@ -63,59 +58,76 @@ else if($polygonType == "country")
 }
 $query .= " ORDER BY polygon_points.Polygon_ID, Boundary, Point_number";
 
-//echo $query;
+$debugOutput .= $query;
+//echo "Query: $query";
+
 
 // Execute query
 $result = $connection->query($query);
 
-$tagOpen = false;
+$rangeArray = [];
+
 $currentPolygonID = -1;
 $currentBoundary = -1;
-echo "<br/>num rows: " . $result->num_rows . "<br/>";
+$currentPolygonArray = null;
+$currentBoundaryArray = null;
+
+
+//echo "<br/>num rows: " . $result->num_rows . "<br/>";
 while($row = $result->fetch_array())
 {
   $thisPolygon = $row["Polygon_ID"];
   $thisBoundary = $row["Boundary"];
   if($currentBoundary != $thisBoundary && $currentPolygonID == $thisPolygon)
   {
-    if($tagOpen)
+    if($currentBoundaryArray)
     {
-      // There is a tag already open, so close it
-      echo "</boundary>";
+      $currentPolygonArray[] = $currentBoundaryArray;
     }
-    
-    echo "<boundary>";
+
+    $debugOutput .= "Adding new boundary...";
+    $currentBoundaryArray = [];
     $currentBoundary = $thisBoundary;
-    $tagOpen = true;
   }
   else if($currentPolygonID != $thisPolygon)
   {
-    if($tagOpen)
+    if($currentPolygonArray !== null)
     {
-      // There is a tag already open, so close it
-      echo "</boundary>";
-      echo "</polygon>";
+      $currentPolygonArray[] = $currentBoundaryArray;
+      $rangeArray[] = $currentPolygonArray;
+      //echo "rangeArray:"; print_r($rangeArray);
     }
-    
-    echo "<polygon>";
-    echo "<boundary>";
+
+    $debugOutput .= "Adding new polygon...";
+    //echo "currentBoundaryArray:"; print_r($currentBoundaryArray);
+    //echo "rangeArray:"; print_r($rangeArray);
+    $currentPolygonArray = [];
+    $currentBoundaryArray = [];
+    //echo "rangeArray:"; print_r($rangeArray);
     $currentPolygonID = $thisPolygon;
     $currentBoundary = $thisBoundary;
-    $tagOpen = true;
+    //echo "rangeArray:"; print_r($rangeArray);
   }
-  
-  echo "<point><phi>" . $row["Phi"] . "</phi><delta>" . $row["Delta"] . "</delta></point>";
+
+  //echo "<point><phi>" . $row["Phi"] . "</phi><delta>" . $row["Delta"] . "</delta></point>";
+  $currentBoundaryArray[] = (float) $row["Phi"];
+  $currentBoundaryArray[] = (float) $row["Delta"];
+  //echo "currentBoundaryArray:"; print_r($currentBoundaryArray);
+
 }
 
-if($tagOpen)
+// Add last polygon  
+if($currentPolygonArray)
 {
-  // There is a tag still open, so close it
-  echo "</boundary>";
-  echo "</polygon>";
+  $currentPolygonArray[] = $currentBoundaryArray;
+  $rangeArray[] = $currentPolygonArray;
 }
 
-// Close response tag
-echo "</response>";
+$response["range"] = $rangeArray;
+$response["debugOutput"] = $debugOutput;
+
+// Output JSON response
+echo json_encode($response);
 
 $connection->close();
 
