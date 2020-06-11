@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Entity, BillboardGraphics, EllipseGraphics } from "resium";
-import { Cartesian3, Color } from 'cesium';
+import { Cartesian3, Color, VerticalOrigin } from 'cesium';
 
 const SearchMarker = (props) => {
   if(props.visible) { 
@@ -12,7 +12,7 @@ const SearchMarker = (props) => {
           description="This shows the point you last searched on the map"
           position={Cartesian3.fromDegrees(props.searchPoint.longitude, props.searchPoint.latitude)}
         >
-          <BillboardGraphics image={'navigation-5109671_1280.png'} scale={0.03}/>
+          <BillboardGraphics image={'navigation-5109671_1280.png'} scale={0.03} verticalOrigin={VerticalOrigin.BOTTOM}/>
         </Entity>
         <Entity
           name="Search range"

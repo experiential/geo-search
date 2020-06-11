@@ -46,6 +46,7 @@ if($polygonType == "species")
   }
 }
 
+$debugOutput .= " -- Beginning search for polygons...";
 
 // Construct query for polygon data
 if($polygonType == "species")
@@ -58,9 +59,8 @@ else if($polygonType == "country")
 }
 $query .= " ORDER BY polygon_points.Polygon_ID, Boundary, Point_number";
 
-$debugOutput .= $query;
+$debugOutput .= " -- " . $query;
 //echo "Query: $query";
-
 
 // Execute query
 $result = $connection->query($query);
@@ -85,7 +85,7 @@ while($row = $result->fetch_array())
       $currentPolygonArray[] = $currentBoundaryArray;
     }
 
-    $debugOutput .= "Adding new boundary...";
+    $debugOutput .= " -- Adding new boundary...";
     $currentBoundaryArray = [];
     $currentBoundary = $thisBoundary;
   }
@@ -98,7 +98,7 @@ while($row = $result->fetch_array())
       //echo "rangeArray:"; print_r($rangeArray);
     }
 
-    $debugOutput .= "Adding new polygon...";
+    $debugOutput .= " -- Adding new polygon...";
     //echo "currentBoundaryArray:"; print_r($currentBoundaryArray);
     //echo "rangeArray:"; print_r($rangeArray);
     $currentPolygonArray = [];
@@ -117,8 +117,9 @@ while($row = $result->fetch_array())
 }
 
 // Add last polygon  
-if($currentPolygonArray)
+if($currentPolygonArray !== null)
 {
+  $debugOutput .= " -- Adding final polygon";
   $currentPolygonArray[] = $currentBoundaryArray;
   $rangeArray[] = $currentPolygonArray;
 }

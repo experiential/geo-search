@@ -35,18 +35,18 @@ class EarthMap extends Component {
     // Mouse over the globe to see the cartographic position 
     const position = eventInfo.position;
     console.log("x:" + position.x, "y:" + position.y);
-    var cartesian = viewer.camera.pickEllipsoid(new Cesium.Cartesian3(position.x, position.y), ellipsoid);
+    const cartesian = viewer.camera.pickEllipsoid(new Cesium.Cartesian3(position.x, position.y), ellipsoid);
     if (cartesian) {
-      var cartographic = ellipsoid.cartesianToCartographic(cartesian);
-      var longitude = Cesium.Math.toDegrees(cartographic.longitude);
-      var latitude = Cesium.Math.toDegrees(cartographic.latitude);
+      const cartographic = ellipsoid.cartesianToCartographic(cartesian);
+      const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+      const latitude = Cesium.Math.toDegrees(cartographic.latitude);
       console.log("long:" + longitude, "lat:" + latitude);
 
       // Update state with new search point
       this.props.searchAtPoint(longitude, latitude);
 
       // Perform search
-      var range = this.props.searchParameters.range;
+      const range = this.props.searchParameters.range;
       fetch('/geog_search_xml.php?delta='+latitude+'&phi='+longitude+'&range='+range, {
         method: 'GET',
         headers: {
@@ -59,7 +59,11 @@ class EarthMap extends Component {
         //var results = document.getElementById("results");
         //results.innerHTML = data;
         this.props.updateResults(data.results);
-        viewer.zoomTo(viewer.entities);
+        viewer.entities.values.forEach((entity) => {
+          if(entity.name === "Search range")
+            viewer.zoomTo(entity);
+        })
+        //viewer.zoomTo(viewer.entities);
       })
       .catch((error) => {
         console.error('Error:', error);
