@@ -16,14 +16,13 @@ const SearchResultsPanel = (props) =>
       </tr>
       {
         props.searchResults.results.map( result => { return (
-            <SearchResult key={ result.speciesID } result={ result }/>
+            <SearchResult key={ result } speciesID={ result }/>
         )})
       }
     </tbody>
   </table>
 
-// // Comment to sort out highlighting in Sublime
-const mapStateToProps = (state) => {
+const mapStateToProps = ( state ) => {
   return { searchResults: state.searchResults };
 };
 

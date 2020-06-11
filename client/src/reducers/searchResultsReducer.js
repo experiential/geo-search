@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case UPDATE_RESULTS:
-			return { ...state, results: action.payload.results };
+			return { ...state, results: action.payload.results.map( (result) => result.speciesID ) };
 		default:
 			return state;
 	}

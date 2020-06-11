@@ -1,15 +1,15 @@
 import React from 'react';
-//import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { Entity, PolygonGraphics } from "resium";
 import { Cartesian3, Color, PolygonHierarchy } from 'cesium';
 
 const SpeciesRange = (props) => {
-  if(props.range.visible) { 
-
+    console.log("Showing range:")
+    const species = props.species;
     return(
       <React.Fragment>
       {
-        props.range.range.map( ( polygon, index ) => { 
+        species.geoRange.map( ( polygon, index ) => {
 
           // Build polygon hierarchy
           const hierarchy = new PolygonHierarchy(
@@ -22,8 +22,8 @@ const SpeciesRange = (props) => {
           return (
           <Entity
             key={index}
-            name="Species range"
-            description="This shows the area around the search point within the range you specified"
+            name={species.binomial}
+            description={"This shows a region where the species '"+species.binomial+"', or the '" + species.commonName + "', lives"}
           >
             <PolygonGraphics
               hierarchy={hierarchy}
@@ -38,16 +38,11 @@ const SpeciesRange = (props) => {
       }
       </React.Fragment>
     );
-  } else {
-    return null;
-  }
 }
 
-export default SpeciesRange;
-/*
-const mapStateToProps = (state) => {
-  return { visible: state.map.searchMarkerVisible, searchPoint: state.map.searchPoint, range: state.searchParameters.range };
+
+const mapStateToProps = (state, { speciesID }) => {
+  return { species: state.species[speciesID] };
 };
 
-export default connect(mapStateToProps, { })(SearchMarker);
-*/
+export default connect(mapStateToProps, { })(SpeciesRange);

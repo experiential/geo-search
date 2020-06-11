@@ -124,6 +124,7 @@ if($currentPolygonArray !== null)
   $rangeArray[] = $currentPolygonArray;
 }
 
+$response["speciesID"] = (int) $id;
 $response["range"] = $rangeArray;
 $response["debugOutput"] = $debugOutput;
 

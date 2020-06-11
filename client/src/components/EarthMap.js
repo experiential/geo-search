@@ -21,8 +21,11 @@ class EarthMap extends Component {
         </ScreenSpaceEventHandler>
         <SearchMarker/>
         {
-          this.props.map.speciesRanges.map( range => { return (
-            <SpeciesRange key={ range.speciesID } range={ range }/>
+          this.props["map"].speciesVisible.map( speciesID => {
+            console.log("EarthMap: Species ID: ", speciesID);
+            console.log("EarthMap: this.props.species: ", this.props.species);
+            return (
+            <SpeciesRange key={ speciesID } speciesID={ speciesID }/>
           )})
         }
       </Viewer>

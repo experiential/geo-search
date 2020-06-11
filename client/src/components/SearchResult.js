@@ -5,13 +5,13 @@ import { selectSpecies, showSpeciesRange } from '../actions';
 
 
 const SearchResult = (props) =>
-  <tr onClick={ (event) => selectSpeciesHandler(props.result.speciesID, props.selectSpecies, props.showSpeciesRange) }>
-    <td>{props.result.binomial}</td>
-    <td>{props.result.commonName}</td>
-    <td>{props.result.order}</td>
-    <td>{props.result.family}</td>
-    <td>{props.result.threatStatus}</td>
-    <td>{props.result.distance}</td>
+  <tr onClick={ (event) => selectSpeciesHandler(props.speciesID, props.selectSpecies, props.showSpeciesRange) }>
+    <td>{props.species.binomial}</td>
+    <td>{props.species.commonName}</td>
+    <td>{props.species.order}</td>
+    <td>{props.species.family}</td>
+    <td>{props.species.threatStatus}</td>
+    <td>{props.species.distance}</td>
   </tr>
 
 const selectSpeciesHandler = ( speciesID, selectSpecies, showSpeciesRange ) =>
@@ -40,4 +40,8 @@ const selectSpeciesHandler = ( speciesID, selectSpecies, showSpeciesRange ) =>
 	selectSpecies(speciesID);
 }
 
-export default connect(null, { selectSpecies, showSpeciesRange })(SearchResult);
+const mapStateToProps = ( state, { speciesID } ) => {
+	return { species: state.species[speciesID] };
+};
+
+export default connect(mapStateToProps, { selectSpecies, showSpeciesRange })(SearchResult);
