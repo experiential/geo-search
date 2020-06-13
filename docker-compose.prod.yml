@@ -2,26 +2,20 @@ version: '3.4'
 services:
   route_handler:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
-      - '3050:80'
+      - '80:80'
     volumes:
       - ./php:/www/data
   client:
     build:
-      dockerfile: Dockerfile.dev
-    volumes:
-      - /app/node_modules
-      - ./client:/app
+      dockerfile: Dockerfile
+      target: prod
   php:
     build:
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     volumes:
       - ./php:/www/data
-    ports:
-      - '9000:9000'
   database:
     volumes:
       - './database:/docker-entrypoint-initdb.d'
-    ports:
-      - '3051:3306'
