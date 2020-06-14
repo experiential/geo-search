@@ -23,7 +23,7 @@ const SpeciesRange = (props) => {
           <Entity
             key={index}
             name={species.binomial}
-            description={"This shows a region where the species '"+species.binomial+"', or the '" + species.commonName + "', lives"}
+            description={"This shows a region where the species <em>" + species.binomial + "</em>, or the " + species.commonName + ", lives."}
           >
             <PolygonGraphics
               hierarchy={hierarchy}

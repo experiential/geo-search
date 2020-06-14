@@ -6,12 +6,22 @@ import ParameterPanel from './ParameterPanel';
 import SearchResultsPanel from './SearchResultsPanel';
 
   
-const App = () => 
-  <div>
-    <EarthMap/>
-    <ParameterPanel/>
-    <SearchResultsPanel/>
-  </div>;
+const App = () =>
+    <React.Fragment>
+        <div className="row my-4">
+            <div className="col">
+                <EarthMap/>
+            </div>
+            <div className="col col-2">
+                <ParameterPanel/>
+            </div>
+        </div>
+        <div className="row my-4">
+            <div className="col">
+                <SearchResultsPanel/>
+            </div>
+        </div>
+    </React.Fragment>;
 
 
 export default hot(App);

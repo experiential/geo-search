@@ -8,15 +8,15 @@ const SearchMarker = (props) => {
     return(
       <React.Fragment>
         <Entity
-          name="Search point"
-          description="This shows the point you last searched on the map"
+          name={"Search point"}
+          description={"This shows the point you last searched on the map, which is " + Math.abs(props.searchPoint.latitude) + "&deg;" + ((props.searchPoint.latitude > 0)?"N":"S") + " by " + Math.abs(props.searchPoint.longitude) + "&deg;" + ((props.searchPoint.longitude > 0)?"E":"W") }
           position={Cartesian3.fromDegrees(props.searchPoint.longitude, props.searchPoint.latitude)}
         >
           <BillboardGraphics image={'navigation-5109671_1280.png'} scale={0.03} verticalOrigin={VerticalOrigin.BOTTOM}/>
         </Entity>
         <Entity
-          name="Search range"
-          description="This shows the area around the search point within the range you specified"
+          name={"Search area (range: " + props.range + "km)"}
+          description={"This shows the area around the search point within a range of " + props.range + "km."}
           position={Cartesian3.fromDegrees(props.searchPoint.longitude, props.searchPoint.latitude)}
         >
           <EllipseGraphics

@@ -10,6 +10,7 @@ const RangeField = (props) =>
 		type="number"
 		value={props.rangeValue}
 		onChange={ (event) => props.changeRange(event.target.value) }
+		class="w-50"
 	/>
 
 const mapStateToProps = (state) => {
