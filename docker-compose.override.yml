@@ -2,20 +2,18 @@ version: '3.4'
 services:
   route_handler:
     build:
-      dockerfile: Dockerfile.dev
+      target: dev
     ports:
       - '3050:80'
     volumes:
       - ./php:/www/data
   client:
     build:
-      dockerfile: Dockerfile.dev
+      target: dev
     volumes:
       - /app/node_modules
       - ./client:/app
   php:
-    build:
-      dockerfile: Dockerfile.dev
     volumes:
       - ./php:/www/data
     ports:

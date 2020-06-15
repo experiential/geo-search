@@ -8,7 +8,7 @@ const SearchResultsPanel = (props) => {
     if (props.searchResults.results.length > 0) {
         return (
             <div>
-                <h5>Search results</h5>
+                <h5>Search results (click to show species range)</h5>
                 <table className="table table-hover">
                     <thead>
                     <tr>
@@ -32,7 +32,11 @@ const SearchResultsPanel = (props) => {
             </div>
         )
     } else {
-        return null;
+        return (
+            <div>
+              <h5>Double click on the Earth to search for nearby species.</h5>
+            </div>
+        );
     }
 }
 

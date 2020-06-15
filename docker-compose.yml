@@ -4,6 +4,7 @@ services:
     restart: always
     build:
       context: ./route_handler
+      dockerfile: Dockerfile
     depends_on:
       - client
       - php
@@ -12,10 +13,12 @@ services:
     restart: always
     build:
       context: ./client
+      dockerfile: Dockerfile
   php:
     restart: always
     build:
       context: ./php
+      dockerfile: Dockerfile
   database:
     image: 'mysql:latest'
     command: --default-authentication-plugin=mysql_native_password

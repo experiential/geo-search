@@ -2,18 +2,15 @@ version: '3.4'
 services:
   route_handler:
     build:
-      dockerfile: Dockerfile
+      target: prod
     ports:
       - '80:80'
     volumes:
       - ./php:/www/data
   client:
     build:
-      dockerfile: Dockerfile
       target: prod
   php:
-    build:
-      dockerfile: Dockerfile
     volumes:
       - ./php:/www/data
   database:
