@@ -17,9 +17,11 @@ const SearchResult = (props) =>
 const selectSpeciesHandler = ( speciesID, selectSpecies, showSpeciesRange ) =>
 {
 	//console.log("speciesID=", speciesID);
-	console.log({"url": '/shape_xml.php?id='+speciesID});
+	//console.log({"url": '/shape_xml.php?id='+speciesID});
+	console.log({"url": "/species/" + speciesID + "/geo-range"});
 	// Trigger call to retrieve species range data from server
-	fetch('/shape_xml.php?id='+speciesID, {
+	//fetch('/shape_xml.php?id='+speciesID, {
+	fetch("/species/" + speciesID + "/geo-range", {
 		method: 'GET',
 		headers: {},
 		body: null,

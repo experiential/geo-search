@@ -1,6 +1,7 @@
 version: '3.4'
 services:
   route_handler:
+    restart: always
     build:
       target: prod
     ports:
@@ -8,11 +9,14 @@ services:
     volumes:
       - ./php:/www/data
   client:
+    restart: always
     build:
       target: prod
   php:
+    restart: always
     volumes:
       - ./php:/www/data
   database:
+    restart: always
     volumes:
       - './database:/docker-entrypoint-initdb.d'

@@ -13,6 +13,13 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
+  api:
+    build:
+      target: dev
+    volumes:
+      - ./api:/app
+    ports:
+      - '4000:4000'
   php:
     volumes:
       - ./php:/www/data
