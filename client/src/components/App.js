@@ -8,7 +8,7 @@ import SearchResultsPanel from './SearchResultsPanel';
   
 const App = () =>
     <React.Fragment>
-        <div className="row my-4">
+        <div className="row py-4" style={ { position: "sticky", top: "0px", zIndex: "2000", backgroundColor: "#000" } }>
             <div className="col">
                 <EarthMap/>
             </div>

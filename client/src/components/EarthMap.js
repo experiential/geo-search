@@ -46,7 +46,9 @@ const geoSearch = (eventInfo, viewer, { searchAtPoint, searchParameters, updateR
 
     // Perform search
     const range = searchParameters.range;
-    fetch('/geog_search_xml.php?delta='+latitude+'&phi='+longitude+'&range='+range, {
+    ///species/geo-search
+    //fetch('/geog_search_xml.php?delta='+latitude+'&phi='+longitude+'&range='+range, {
+    fetch('/species/geo-search?delta='+latitude+'&phi='+longitude+'&range='+range, {
       method: 'GET',
       headers: {
       },

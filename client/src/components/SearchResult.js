@@ -11,7 +11,7 @@ const SearchResult = (props) =>
     <td>{props.species.order}</td>
     <td>{props.species.family}</td>
     <td>{props.species.threatStatus}</td>
-    <td>{props.species.distance}</td>
+    <td>{props.distance}</td>
   </tr>
 
 const selectSpeciesHandler = ( speciesID, selectSpecies, showSpeciesRange ) =>

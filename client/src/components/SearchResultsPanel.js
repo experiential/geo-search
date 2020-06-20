@@ -17,13 +17,13 @@ const SearchResultsPanel = (props) => {
                         <th>Order</th>
                         <th>Family</th>
                         <th>Threat status</th>
-                        <th>Distance</th>
+                        <th>Distance in km</th>
                     </tr>
                     </thead>
                     <tbody>
                     {props.searchResults.results.map(result => {
                             return (
-                                <SearchResult key={result} speciesID={result}/>
+                                <SearchResult key={result.speciesID} speciesID={result.speciesID} distance={result.distance}/>
                             )
                         }
                     )}

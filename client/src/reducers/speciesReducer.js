@@ -15,6 +15,7 @@ export default (state = INITIAL_STATE, action) => {
                     speciesList[species.speciesID] = {};
                 }
                 Object.assign(speciesList[species.speciesID], species);
+                console.log("speciesReducer: species now:",speciesList[species.speciesID])
             });
             return speciesList;
         case SHOW_SPECIES_RANGE:
