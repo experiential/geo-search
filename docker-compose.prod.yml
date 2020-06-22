@@ -12,6 +12,9 @@ services:
     restart: always
     build:
       target: prod
+  api:
+    build:
+      target: prod
   php:
     restart: always
     volumes:
