@@ -1,4 +1,6 @@
 import {SHOW_SPECIES_RANGE, UPDATE_RESULTS} from '../actions/types';
+import isEqual from 'lodash/isEqual';
+import pick from 'lodash/pick';
 
 const INITIAL_STATE = {};
 
@@ -11,13 +13,17 @@ export default (state = INITIAL_STATE, action) => {
             console.log("Species reducer called with UPDATE_RESULTS, action.payload is:", action.payload);
 
             action.payload.results.forEach( (species) => {
-                if(!speciesList[species.speciesID]) {
-                    speciesList[species.speciesID] = {};
+                // Check whether species data from DB is different from whatever we currently have... only update if it
+                // has changed to avoid triggering unnecessary React DOM updates
+                const speciesFields = ["speciesID", "order", "family", "binomial", "commonName", "threatStatus"];
+                const speciesDataSubset = pick(species, speciesFields);
+                if(!isEqual(speciesDataSubset, pick(speciesList[species.speciesID], speciesFields))) {
+                    speciesList[species.speciesID] = Object.assign({}, speciesList[species.speciesID], speciesDataSubset);
+                    console.log("speciesReducer: species now:", speciesList[species.speciesID])
                 }
-                Object.assign(speciesList[species.speciesID], species);
-                console.log("speciesReducer: species now:",speciesList[species.speciesID])
             });
             return speciesList;
+
         case SHOW_SPECIES_RANGE:
             console.log("Species reducer called with SHOW_SPECIES_RANGE, action.payload is:", action.payload);
 

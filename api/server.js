@@ -69,7 +69,7 @@ router.get('/species/geo-search', async ctx => {
         if(distance <= searchRange) { // handles case where searchRange is 0.0
             // Species is within search range
             if(speciesFound.has(speciesID)) {
-                speciesFound.get(speciesID).distance = Math.min(distance, speciesFound.get(speciesID).distance);
+                speciesFound.get(speciesID).distance = Math.min(Math.round(distance), speciesFound.get(speciesID).distance);
             } else {
                 row.distance = Math.round(distance);
                 speciesFound.set(speciesID, row);
