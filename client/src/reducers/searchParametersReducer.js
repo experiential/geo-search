@@ -1,4 +1,4 @@
-import { CHANGE_RANGE } from '../actions/types';
+import { CHANGE_RANGE } from "../actions/types";
 
 const INITIAL_STATE = {
 	range: 1000,
