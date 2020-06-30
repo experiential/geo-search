@@ -36,7 +36,7 @@ const SearchResultsPanel = props => {
 	} else {
 		return (
 			<div>
-				<h5>Double click on the Earth to search for nearby species.</h5>
+				<h5>Click/tap on the Earth to search for nearby species.</h5>
 			</div>
 		);
 	}

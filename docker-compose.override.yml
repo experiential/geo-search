@@ -17,6 +17,7 @@ services:
     build:
       target: dev
     volumes:
+      - /app/node_modules
       - ./api:/app
     ports:
       - '4000:4000'

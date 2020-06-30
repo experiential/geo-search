@@ -17,7 +17,7 @@ const EarthMap = props => {
 					action={evt =>
 						geoSearch(evt, ref.current.cesiumElement, props)
 					}
-					type={Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK}
+					type={Cesium.ScreenSpaceEventType.LEFT_CLICK}
 				/>
 			</ScreenSpaceEventHandler>
 			<SearchMarker />
