@@ -7,7 +7,7 @@ const SearchResultsPanel = props => {
 	if (props.searchResults.results.length > 0) {
 		return (
 			<div>
-				<h5>Search results (click to show species range)</h5>
+				<h5>Search results (click/tap to show species range)</h5>
 				<table className="table table-hover">
 					<thead>
 						<tr>

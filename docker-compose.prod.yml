@@ -6,8 +6,6 @@ services:
       target: prod
     ports:
       - '80:80'
-    volumes:
-      - ./php:/www/data
   client:
     restart: always
     build:
@@ -15,10 +13,6 @@ services:
   api:
     build:
       target: prod
-  php:
-    restart: always
-    volumes:
-      - ./php:/www/data
   database:
     restart: always
     volumes:

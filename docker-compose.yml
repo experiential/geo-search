@@ -6,19 +6,14 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - client
-      - php
+      - api
   client:
-    stdin_open: true
     build:
       context: ./client
       dockerfile: Dockerfile
   api:
     build:
       context: ./api
-      dockerfile: Dockerfile
-  php:
-    build:
-      context: ./php
       dockerfile: Dockerfile
   database:
     image: 'mysql:latest'

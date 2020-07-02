@@ -8,6 +8,7 @@ services:
     volumes:
       - ./php:/www/data
   client:
+    stdin_open: true
     build:
       target: dev
     volumes:
@@ -22,6 +23,9 @@ services:
     ports:
       - '4000:4000'
   php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
     volumes:
       - ./php:/www/data
     ports:
