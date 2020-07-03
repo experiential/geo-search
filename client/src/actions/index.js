@@ -1,5 +1,7 @@
 import {
 	CHANGE_RANGE,
+	CHANGE_LONGITUDE,
+	CHANGE_LATITUDE,
 	SEARCH_AT_POINT,
 	UPDATE_RESULTS,
 	SELECT_SPECIES,
@@ -10,6 +12,20 @@ export const changeRange = range => {
 	return {
 		type: CHANGE_RANGE,
 		payload: { range },
+	};
+};
+
+export const changeLongitude = longitude => {
+	return {
+		type: CHANGE_LONGITUDE,
+		payload: { longitude },
+	};
+};
+
+export const changeLatitude = latitude => {
+	return {
+		type: CHANGE_LATITUDE,
+		payload: { latitude },
 	};
 };
 

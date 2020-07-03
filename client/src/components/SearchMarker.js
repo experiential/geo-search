@@ -62,7 +62,10 @@ const SearchMarker = props => {
 const mapStateToProps = state => {
 	return {
 		visible: state.map.searchMarkerVisible,
-		searchPoint: state.map.searchPoint,
+		searchPoint: {
+			longitude: state.searchParameters.longitude,
+			latitude: state.searchParameters.latitude,
+		},
 		range: state.searchParameters.range,
 	};
 };

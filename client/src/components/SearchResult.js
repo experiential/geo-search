@@ -13,10 +13,10 @@ const SearchResult = props => (
 			)
 		}
 	>
-		<td>{props.species.binomial}</td>
+		<td className="d-none d-sm-table-cell">{props.species.binomial}</td>
 		<td>{props.species.commonName}</td>
-		<td>{props.species.order}</td>
-		<td>{props.species.family}</td>
+		<td className="d-none d-sm-table-cell">{props.species.order}</td>
+		<td className="d-none d-sm-table-cell">{props.species.family}</td>
 		<td>{props.species.threatStatus}</td>
 		<td>{props.distance}</td>
 	</tr>

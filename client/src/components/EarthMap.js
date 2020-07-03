@@ -6,6 +6,7 @@ import * as Cesium from "cesium";
 import SearchMarker from "./SearchMarker";
 import SpeciesRange from "./SpeciesRange";
 import { updateResults, searchAtPoint } from "../actions";
+import { geoSearch } from "../sideEffects";
 
 const EarthMap = props => {
 	const ref = useRef(null);
@@ -15,7 +16,7 @@ const EarthMap = props => {
 			<ScreenSpaceEventHandler>
 				<ScreenSpaceEvent
 					action={evt =>
-						geoSearch(evt, ref.current.cesiumElement, props)
+						mapClicked(evt, ref.current.cesiumElement, props)
 					}
 					type={Cesium.ScreenSpaceEventType.LEFT_CLICK}
 				/>
@@ -30,7 +31,7 @@ const EarthMap = props => {
 	);
 };
 
-const geoSearch = (
+const mapClicked = (
 	eventInfo,
 	viewer,
 	{ searchAtPoint, searchParameters, updateResults },
@@ -52,6 +53,9 @@ const geoSearch = (
 		// Update state with new search point
 		searchAtPoint(longitude, latitude);
 
+		// Call API to get search results
+		geoSearch({ searchParameters, updateResults });
+		/*
 		// Perform search
 		const range = searchParameters.range;
 		///species/geo-search
@@ -83,6 +87,8 @@ const geoSearch = (
 			.catch(error => {
 				console.error("Error:", error);
 			});
+
+		 */
 	}
 };
 

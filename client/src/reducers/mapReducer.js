@@ -1,17 +1,23 @@
-import { SEARCH_AT_POINT, SHOW_SPECIES_RANGE } from "../actions/types";
+import {
+	CHANGE_LONGITUDE,
+	CHANGE_LATITUDE,
+	SEARCH_AT_POINT,
+	SHOW_SPECIES_RANGE,
+} from "../actions/types";
 
 const INITIAL_STATE = {
-	searchPoint: { longitude: 0.0, latitude: 0.0 },
+	//searchPoint: { longitude: 0.0, latitude: 0.0 },
 	searchMarkerVisible: false,
 	speciesVisible: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case CHANGE_LONGITUDE:
+		case CHANGE_LATITUDE:
 		case SEARCH_AT_POINT:
 			return {
 				...state,
-				searchPoint: action.payload,
 				searchMarkerVisible: true,
 			};
 		case SHOW_SPECIES_RANGE:

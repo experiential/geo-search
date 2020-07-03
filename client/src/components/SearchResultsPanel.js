@@ -11,10 +11,16 @@ const SearchResultsPanel = props => {
 				<table className="table table-hover">
 					<thead>
 						<tr>
-							<th>Species</th>
+							<th scope="col" className="d-none d-sm-table-cell">
+								Species
+							</th>
 							<th>Common name</th>
-							<th>Order</th>
-							<th>Family</th>
+							<th scope="col" className="d-none d-sm-table-cell">
+								Order
+							</th>
+							<th scope="col" className="d-none d-sm-table-cell">
+								Family
+							</th>
 							<th>Threat status</th>
 							<th>Distance in km</th>
 						</tr>
