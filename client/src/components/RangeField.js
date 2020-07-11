@@ -9,7 +9,7 @@ const RangeField = props => (
 		type="number"
 		value={props.rangeValue}
 		onChange={event => props.changeRange(event.target.value)}
-		className="w-50"
+		className="w-75"
 	/>
 );
 

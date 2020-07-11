@@ -49,7 +49,7 @@ const SearchMarker = props => {
 						extrudedHeight={1000.0}
 						outline
 						outlineColor={Color.GREEN}
-						outlineWidth={1000.0}
+						outlineWidth={2.0}
 					/>
 				</Entity>
 			</React.Fragment>

@@ -12,7 +12,7 @@ const SearchButton = props => {
 				onClick={event =>
 					geoSearch({ searchParameters, updateResults })
 				}
-				className="w-50"
+				className="btn btn-primary w-75"
 			>
 				Search
 			</button>

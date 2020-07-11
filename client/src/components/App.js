@@ -16,10 +16,10 @@ const App = () => (
 				backgroundColor: "#000",
 			}}
 		>
-			<div className="col-sm-10 px-0 px-md-3 mb-4 mb-sm-0">
+			<div className="col-sm-9 col-md-10 px-0 px-md-3 mb-4 mb-sm-0">
 				<EarthMap />
 			</div>
-			<div className="col-sm-2 mt-sm-2 pl-sm-2 px-md-3 mt-md-0">
+			<div className="col-sm-3 col-md-2 mt-sm-2 pl-sm-2 px-md-3 mt-md-0">
 				<ParameterPanel />
 			</div>
 		</div>

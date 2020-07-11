@@ -1,15 +1,40 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { Viewer, ScreenSpaceEvent, ScreenSpaceEventHandler } from "resium";
 import * as Cesium from "cesium";
 
 import SearchMarker from "./SearchMarker";
 import SpeciesRange from "./SpeciesRange";
-import { updateResults, searchAtPoint } from "../actions";
+import {updateResults, searchAtPoint, hideSpeciesRange} from "../actions";
 import { geoSearch } from "../sideEffects";
 
 const EarthMap = props => {
+	// Get reference to Cesium Viewer object
 	const ref = useRef(null);
+
+	// Unfortunately, Cesium's infoBox is hard to customise. We have to do some messing around to get links in the
+	// infoBox to dispatch an action. First we need a reference to the Cesium viewer object once it has been created.
+	useEffect( () => {
+		const viewer = ref.current.cesiumElement;
+		// The line below will stop the info box from showing (though also stops the search from working)
+		//viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+		// Now we add a load event listener to the infoBox frame, otherwise any changes we make get overwritten when
+		// the infoBox is populated.
+		viewer.infoBox.frame.addEventListener('load', function() {
+			// Set permissions on the infoBox iframe to allow events to be fired, and add event listener to handle
+			// the 'hide species' link.
+			viewer.infoBox.frame.setAttribute('sandbox', 'allow-same-origin allow-popups allow-forms allow-scripts allow-top-navigation');
+			viewer.infoBox.frame.contentDocument.body.addEventListener('click', function(e) {
+				if (e.target && e.target.className === 'hide-species-link') {
+					const speciesID = parseInt(e.target.getAttribute("data-species-id"));
+					if(!isNaN(speciesID)) {
+						props.hideSpeciesRange(speciesID);
+					}
+				}
+			}, false);
+		}, false);
+	}, []);
 
 	return (
 		<Viewer ref={ref}>
@@ -24,7 +49,6 @@ const EarthMap = props => {
 			<SearchMarker />
 			{props["map"].speciesVisible.map(speciesID => {
 				console.log("EarthMap: Species ID: ", speciesID);
-				console.log("EarthMap: this.props.species: ", props.species);
 				return <SpeciesRange key={speciesID} speciesID={speciesID} />;
 			})}
 		</Viewer>
@@ -36,6 +60,11 @@ const mapClicked = (
 	viewer,
 	{ searchAtPoint, searchParameters, updateResults },
 ) => {
+	if(viewer.infoBox) {
+		viewer.infoBox.frame.sandbox = "allow-scripts";
+	} else {
+		console.log("infoBox object doesn't exist!!!!");
+	}
 	const ellipsoid = viewer.scene.globe.ellipsoid;
 	// Mouse over the globe to see the cartographic position
 	const position = eventInfo.position;
@@ -53,8 +82,9 @@ const mapClicked = (
 		// Update state with new search point
 		searchAtPoint(longitude, latitude);
 
+		console.log("searchParameters: " + JSON.stringify(searchParameters));
 		// Call API to get search results
-		geoSearch({ searchParameters, updateResults });
+		geoSearch({ searchPoint: { longitude, latitude}, searchParameters, updateResults });
 		/*
 		// Perform search
 		const range = searchParameters.range;
@@ -90,6 +120,7 @@ const mapClicked = (
 
 		 */
 	}
+	return true;
 };
 
 const mapStateToProps = state => {
@@ -98,5 +129,5 @@ const mapStateToProps = state => {
 
 export default connect(
 	mapStateToProps,
-	{ searchAtPoint, updateResults },
+	{ searchAtPoint, updateResults, hideSpeciesRange },
 )(EarthMap);

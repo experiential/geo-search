@@ -24,7 +24,7 @@ const LongitudeField = props => {
 				onChange={event =>
 					props.changeLongitude(parseFloat(event.target.value))
 				}
-				className="w-50"
+				className="w-75"
 			/>
 			{degreeText}
 		</React.Fragment>

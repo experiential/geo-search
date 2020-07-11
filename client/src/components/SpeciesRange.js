@@ -33,7 +33,7 @@ const SpeciesRange = props => {
 							species.binomial +
 							"</em>, or the " +
 							species.commonName +
-							", lives."
+							", lives. <a href='javascript:void(0)' class='hide-species-link' data-species-id='"+species.speciesID+"'>Hide region</a>"
 						}
 					>
 						<PolygonGraphics
@@ -42,7 +42,7 @@ const SpeciesRange = props => {
 							extrudedHeight={1000.0}
 							outline
 							outlineColor={Color.YELLOW}
-							outlineWidth={50.0}
+							outlineWidth={2.0}
 						/>
 					</Entity>
 				);

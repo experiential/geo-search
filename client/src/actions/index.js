@@ -6,6 +6,7 @@ import {
 	UPDATE_RESULTS,
 	SELECT_SPECIES,
 	SHOW_SPECIES_RANGE,
+	HIDE_SPECIES_RANGE,
 } from "./types";
 
 export const changeRange = range => {
@@ -60,5 +61,16 @@ export const showSpeciesRange = (speciesID, range) => {
 	return {
 		type: SHOW_SPECIES_RANGE,
 		payload: { speciesID, range },
+	};
+};
+
+export const hideSpeciesRange = (speciesID) => {
+	console.log(
+		"Action creator hideSpeciesRange called with ",
+		speciesID
+	);
+	return {
+		type: HIDE_SPECIES_RANGE,
+		payload: { speciesID },
 	};
 };

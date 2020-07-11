@@ -2,11 +2,17 @@
 
 //import { updateResults, searchAtPoint } from "./actions";
 
-export const geoSearch = ({ searchParameters, updateResults }) => {
+export const geoSearch = ({ searchPoint, searchParameters, updateResults }) => {
 	// Decompose search parameters
-	const { latitude, longitude, range } = searchParameters;
+	const { range } = searchParameters;
+    let longitude, latitude;
+    if(searchPoint === undefined ) {
+        ({ longitude, latitude } = searchParameters);
+    } else {
+        ({ longitude, latitude } = searchPoint);
+    }
 
-	// Perform search
+    // Perform search
 	fetch(
 		"/species/geo-search?delta=" +
 			latitude +
