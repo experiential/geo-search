@@ -11,22 +11,26 @@ const LongitudeField = props => {
 	}
 	return (
 		<React.Fragment>
-			<input
-				id="longitudeField"
-				type="number"
-				value={
-					focus
-						? props.longitudeValue
-						: Math.abs(props.longitudeValue)
-				}
-				onFocus={event => setFocus(true)}
-				onBlur={event => setFocus(false)}
-				onChange={event =>
-					props.changeLongitude(parseFloat(event.target.value))
-				}
-				className="w-75"
-			/>
-			{degreeText}
+			<div className="input-group">
+				<input
+					id="longitudeField"
+					type="number"
+					value={
+						focus
+							? props.longitudeValue
+							: Math.abs(props.longitudeValue)
+					}
+					onFocus={event => setFocus(true)}
+					onBlur={event => setFocus(false)}
+					onChange={event =>
+						props.changeLongitude(parseFloat(event.target.value))
+					}
+					className="form-control"
+				/>
+				<div className="input-group-append">
+					<span className="input-group-text">{degreeText}</span>
+				</div>
+			</div>
 		</React.Fragment>
 	);
 };

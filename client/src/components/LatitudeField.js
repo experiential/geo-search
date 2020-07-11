@@ -11,20 +11,24 @@ const LatitudeField = props => {
 	}
 	return (
 		<React.Fragment>
-			<input
-				id="latitudeField"
-				type="number"
-				value={
-					focus ? props.latitudeValue : Math.abs(props.latitudeValue)
-				}
-				onFocus={event => setFocus(true)}
-				onBlur={event => setFocus(false)}
-				onChange={event =>
-					props.changeLatitude(parseFloat(event.target.value))
-				}
-				className="w-75"
-			/>
-			{degreeText}
+			<div className="input-group">
+				<input
+					id="latitudeField"
+					type="number"
+					value={
+						focus ? props.latitudeValue : Math.abs(props.latitudeValue)
+					}
+					onFocus={event => setFocus(true)}
+					onBlur={event => setFocus(false)}
+					onChange={event =>
+						props.changeLatitude(parseFloat(event.target.value))
+					}
+					className="form-control"
+				/>
+				<div className="input-group-append">
+					<span className="input-group-text">{degreeText}</span>
+				</div>
+			</div>
 		</React.Fragment>
 	);
 };

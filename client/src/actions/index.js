@@ -7,6 +7,8 @@ import {
 	SELECT_SPECIES,
 	SHOW_SPECIES_RANGE,
 	HIDE_SPECIES_RANGE,
+	CLEAR_RANGES,
+	CHANGE_SHOW_MULTIPLE_RANGES,
 } from "./types";
 
 export const changeRange = range => {
@@ -74,3 +76,18 @@ export const hideSpeciesRange = (speciesID) => {
 		payload: { speciesID },
 	};
 };
+
+export const clearRanges = () => {
+	return {
+		type: CLEAR_RANGES,
+		payload: {}, // TODO: check whether payload mandatory
+	};
+};
+
+export const changeShowMultipleRanges = allowMultiple => {
+	return {
+		type: CHANGE_SHOW_MULTIPLE_RANGES,
+		payload: { allowMultiple },
+	};
+};
+

@@ -5,6 +5,8 @@ import RangeField from "./RangeField";
 import LongitudeField from "./LongitudeField";
 import LatitudeField from "./LatitudeField";
 import SearchButton from "./SearchButton";
+import ShowMultiple from "./ShowMultiple";
+import ClearButton from "./ClearButton";
 
 const ParameterPanel = props => (
 	<div className="container-fluid">
@@ -24,10 +26,18 @@ const ParameterPanel = props => (
 		<div className="row pb-1 pb-sm-0">
 			<div className="col-3 col-sm-12 pr-0 px-sm-0 mb-1 mb-sm-2">Range:</div>
 			<div className="col-3 col-sm-12 px-0 mb-1 mb-sm-2">
-				<RangeField /> km
+				<RangeField />
 			</div>
 			<div className="col-6 col-sm-12 px-0 mb-1 my-sm-2 my-md-3 text-center">
 				<SearchButton />
+			</div>
+		</div>
+		<div className="row pb-1 pb-sm-0">
+			<div className="col-3 col-sm-12 px-0 mb-1 mb-sm-2">
+				<ShowMultiple />
+			</div>
+			<div className="col-6 col-sm-12 px-0 mb-1 my-sm-2 my-md-3 text-center">
+				<ClearButton />
 			</div>
 		</div>
 	</div>

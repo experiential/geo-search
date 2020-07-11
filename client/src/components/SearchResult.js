@@ -4,15 +4,7 @@ import { connect } from "react-redux";
 import { selectSpecies, showSpeciesRange } from "../actions";
 
 const SearchResult = props => (
-	<tr
-		onClick={event =>
-			selectSpeciesHandler(
-				props.speciesID,
-				props.selectSpecies,
-				props.showSpeciesRange,
-			)
-		}
-	>
+	<tr onClick={event => selectSpeciesHandler(props)}>
 		<td className="d-none d-sm-table-cell">{props.species.binomial}</td>
 		<td>{props.species.commonName}</td>
 		<td className="d-none d-sm-table-cell">{props.species.order}</td>
@@ -22,28 +14,35 @@ const SearchResult = props => (
 	</tr>
 );
 
-const selectSpeciesHandler = (speciesID, selectSpecies, showSpeciesRange) => {
-	//console.log("speciesID=", speciesID);
-	//console.log({"url": '/shape_xml.php?id='+speciesID});
-	console.log({ url: "/species/" + speciesID + "/geo-range" });
-	// Trigger call to retrieve species range data from server
-	//fetch('/shape_xml.php?id='+speciesID, {
-	fetch("/species/" + speciesID + "/geo-range", {
-		method: "GET",
-		headers: {},
-		body: null,
-	})
-		.then(response => response.json())
-		.then(data => {
-			console.log("Success:", data);
-			//var results = document.getElementById("results");
-			//results.innerHTML = data;
-			showSpeciesRange(data.speciesID, data.range);
-			//viewer.zoomTo(viewer.entities);
+const selectSpeciesHandler = ({
+	speciesID,
+	species,
+	selectSpecies,
+	showSpeciesRange,
+}) => {
+	// Check whether we need to download the species range data from the server, or it's already there
+	if (species.geoRange && species.geoRange.length > 0) {
+		showSpeciesRange(speciesID, null);
+	} else {
+		// Trigger call to retrieve species range data from server
+		console.log({ url: "/species/" + speciesID + "/geo-range" });
+		fetch("/species/" + speciesID + "/geo-range", {
+			method: "GET",
+			headers: {},
+			body: null,
 		})
-		.catch(error => {
-			console.error("Error:", error);
-		});
+			.then(response => response.json())
+			.then(data => {
+				console.log("Success:", data);
+				//var results = document.getElementById("results");
+				//results.innerHTML = data;
+				showSpeciesRange(data.speciesID, data.range);
+				//viewer.zoomTo(viewer.entities);
+			})
+			.catch(error => {
+				console.error("Error:", error);
+			});
+	}
 
 	// Call action creator function
 	selectSpecies(speciesID);

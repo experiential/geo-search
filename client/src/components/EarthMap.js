@@ -60,14 +60,8 @@ const mapClicked = (
 	viewer,
 	{ searchAtPoint, searchParameters, updateResults },
 ) => {
-	if(viewer.infoBox) {
-		viewer.infoBox.frame.sandbox = "allow-scripts";
-	} else {
-		console.log("infoBox object doesn't exist!!!!");
-	}
 	const ellipsoid = viewer.scene.globe.ellipsoid;
-	// Mouse over the globe to see the cartographic position
-	const position = eventInfo.position;
+	const position = eventInfo.position; // Find the cartographic position clicked
 	console.log("x:" + position.x, "y:" + position.y);
 	const cartesian = viewer.camera.pickEllipsoid(
 		new Cesium.Cartesian3(position.x, position.y),
@@ -85,40 +79,6 @@ const mapClicked = (
 		console.log("searchParameters: " + JSON.stringify(searchParameters));
 		// Call API to get search results
 		geoSearch({ searchPoint: { longitude, latitude}, searchParameters, updateResults });
-		/*
-		// Perform search
-		const range = searchParameters.range;
-		///species/geo-search
-		//fetch('/geog_search_xml.php?delta='+latitude+'&phi='+longitude+'&range='+range, {
-		fetch(
-			"/species/geo-search?delta=" +
-				latitude +
-				"&phi=" +
-				longitude +
-				"&range=" +
-				range,
-			{
-				method: "GET",
-				headers: {},
-				body: null,
-			},
-		)
-			.then(response => response.json())
-			.then(data => {
-				console.log("Success:", data);
-				//var results = document.getElementById("results");
-				//results.innerHTML = data;
-				updateResults(data.results);
-				viewer.entities.values.forEach(entity => {
-					if (entity.name === "Search range") viewer.zoomTo(entity);
-				});
-				//viewer.zoomTo(viewer.entities);
-			})
-			.catch(error => {
-				console.error("Error:", error);
-			});
-
-		 */
 	}
 	return true;
 };

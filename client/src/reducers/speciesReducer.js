@@ -53,16 +53,19 @@ export default (state = INITIAL_STATE, action) => {
 
 			const speciesID = action.payload.speciesID;
 
-			// Here we will assume that, since this is a response that came back from the server and was presumably
-			// requested for some reason, we don't need to check whether the range is the same... we can just
-			// assume it's different and update the data we have stored for this species.
-			//const speciesList = { ...state }; // Copy existing state
-			if (!speciesList[speciesID]) {
-				speciesList[speciesID] = {};
-			}
-			speciesList[speciesID].geoRange = action.payload.range;
+			if (action.payload.range) {
+				// Here we will assume that, since this is a response that came back from the server and was presumably
+				// requested for some reason, we don't need to check whether the range is the same... we can just
+				// assume it's different and update the data we have stored for this species.
+				//const speciesList = { ...state }; // Copy existing state
+				if (!speciesList[speciesID]) {
+					speciesList[speciesID] = {};
+				}
+				speciesList[speciesID].geoRange = action.payload.range;
 
-			return speciesList;
+				return speciesList;
+			}
+			return state;
 
 		default:
 			return state;
