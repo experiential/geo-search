@@ -2,8 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import RangeField from "./RangeField";
-import LongitudeField from "./LongitudeField";
-import LatitudeField from "./LatitudeField";
+import CoordinateField from "./CoordinateField";
 import SearchButton from "./SearchButton";
 import ShowMultiple from "./ShowMultiple";
 import ClearButton from "./ClearButton";
@@ -16,11 +15,11 @@ const ParameterPanel = props => (
 		<div className="row pb-1 pb-sm-0">
 			<div className="col-3 col-sm-12 pr-0 px-sm-0 mb-1 mb-sm-2">Longitude:</div>
 			<div className="col-3 col-sm-12 px-0 mb-1 mb-sm-2">
-				<LongitudeField />
+				<CoordinateField coordinateType={"longitude"}/>
 			</div>
 			<div className="col-3 col-sm-12 px-0 mb-1 mb-sm-2">Latitude:</div>
 			<div className="col-3 col-sm-12 px-0 mb-1 mb-sm-2">
-				<LatitudeField />
+				<CoordinateField coordinateType={"latitude"}/>
 			</div>
 		</div>
 		<div className="row pb-1 pb-sm-0">

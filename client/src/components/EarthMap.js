@@ -16,6 +16,10 @@ const EarthMap = props => {
 	// infoBox to dispatch an action. First we need a reference to the Cesium viewer object once it has been created.
 	useEffect( () => {
 		const viewer = ref.current.cesiumElement;
+		console.log("viewer:", viewer);
+		//viewer.canvas.width = '100';
+		//viewer.canvas.height = '80';
+
 		// The line below will stop the info box from showing (though also stops the search from working)
 		//viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -34,6 +38,17 @@ const EarthMap = props => {
 				}
 			}, false);
 		}, false);
+
+		// Add a resize listener to the body to change the canvas aspect ratio to keep height constant
+		/*window.addEventListener('resize', event => {
+			const parentStyle = window.getComputedStyle(viewer.canvas.parentElement);
+			const bodyStyle = window.getComputedStyle(document.body);
+			viewer.canvas.width = parentStyle.width;
+			console.log("Max:",parentStyle.height,Math.floor(parseInt(bodyStyle.height) * 0.75));
+			//console.log(bodyStyle);
+			viewer.canvas.height = Math.max(400, Math.floor(window.innerHeight * 0.65)).toString();
+			viewer.render();
+		});*/
 	}, []);
 
 	return (

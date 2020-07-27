@@ -7,7 +7,7 @@ const ShowMultiple = props => {
 	return (
 		<React.Fragment>
 			<div className="form-check">
-				<label className="form-check-label">
+				<label className="form-check-label" title="Allow multiple species ranges to be shown concurrently">
 
 					<input
 						type="checkbox"
@@ -16,7 +16,7 @@ const ShowMultiple = props => {
 						}
 						className="form-check-input"
 					/>
-                    Allow multiple species ranges
+                    Multiple ranges
 				</label>
 			</div>
 		</React.Fragment>

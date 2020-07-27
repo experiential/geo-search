@@ -13,13 +13,13 @@ const App = () => (
 				position: "sticky",
 				top: "0px",
 				zIndex: "200",
-				backgroundColor: "#000",
+				backgroundColor: "black",
 			}}
 		>
-			<div className="col-sm-9 col-md-10 px-0 px-md-3 mb-4 mb-sm-0">
+			<div className="col-sm-9 col-lg-10 px-0 px-md-3 mb-4 mb-sm-0">
 				<EarthMap />
 			</div>
-			<div className="col-sm-3 col-md-2 mt-sm-2 pl-sm-2 px-md-3 mt-md-0">
+			<div className="col-sm-3 col-lg-2 mt-sm-2 pl-sm-2 px-md-3 mt-md-0">
 				<ParameterPanel />
 			</div>
 		</div>

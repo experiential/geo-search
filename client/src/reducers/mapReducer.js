@@ -1,6 +1,5 @@
 import {
-	CHANGE_LONGITUDE,
-	CHANGE_LATITUDE,
+	CHANGE_COORDINATE,
 	SEARCH_AT_POINT,
 	SHOW_SPECIES_RANGE,
 	HIDE_SPECIES_RANGE,
@@ -17,8 +16,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case CHANGE_LONGITUDE:
-		case CHANGE_LATITUDE:
+		case CHANGE_COORDINATE:
 		case SEARCH_AT_POINT: {
 			return {
 				...state,
