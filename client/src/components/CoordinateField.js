@@ -52,7 +52,8 @@ const CoordinateField = props => {
 };
 
 const getDirection = (coordinateType, coordinateValue) => {
-	// Get E/W/N/S direction with sign function, adding 1 to get value range of 0 to 2
+	// Get E/W/N/S direction from 'directions' array with sign function, adding 1
+	// to get value range of 0 to 2 (rather than -1 to 1)
 	return directions[coordinateType][Math.sign(coordinateValue) + 1];
 };
 
