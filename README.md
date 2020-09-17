@@ -3,7 +3,7 @@ Geo-Search
 
 This is a geographial search tool designed to help people find endangered species that live within any given area on the Earth. The interface is built with Cesium, React and Redux, and the backend API with Node, Koa and MySQL.
 
-I usually have a working version of this tool running [here](http://157.245.45.254/)
+I usually have a [working version of this tool running here](http://157.245.45.254/)
 
 Note that the set of species in the database is a very small subset of all species on Earth; however it does include many endangered and evolutionarily distinct species of mammals and amphibians.
 
