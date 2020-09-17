@@ -58,10 +58,12 @@ export default (state = INITIAL_STATE, action) => {
 				// requested for some reason, we don't need to check whether the range is the same... we can just
 				// assume it's different and update the data we have stored for this species.
 				//const speciesList = { ...state }; // Copy existing state
-				if (!speciesList[speciesID]) {
-					speciesList[speciesID] = {};
+				let newSpeciesData = {};
+				if (speciesList[speciesID]) {
+					newSpeciesData = { ...speciesList[speciesID] }; // Shallow copy
 				}
-				speciesList[speciesID].geoRange = action.payload.range;
+				newSpeciesData.geoRange = action.payload.range;
+				speciesList[speciesID] = newSpeciesData;
 
 				return speciesList;
 			}
